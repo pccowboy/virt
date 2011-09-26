@@ -20,7 +20,7 @@ module Virt
     def document path, attribute=nil
       return nil if new?
       xml = REXML::Document.new(@xml_desc)
-      attribute.nil? ? xml.elements[path].text : xml.elements[path].attributes[attribute]
+      xml.elements[path].nil? ? '' : (attribute.nil? ? xml.elements[path].text : xml.elements[path].attributes[attribute])
     end
   end
 end
