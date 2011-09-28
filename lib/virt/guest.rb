@@ -1,7 +1,7 @@
 module Virt
   class Guest
     include Virt::Util
-    attr_reader :name, :xml_desc, :arch, :current_memory, :type, :boot_device, :machine
+    attr_reader :id, :name, :xml_desc, :arch, :current_memory, :type, :boot_device, :machine
     attr_accessor :memory, :vcpu, :volume, :interface, :template_path
 
     def initialize options = {}
@@ -10,6 +10,7 @@ module Virt
 
       # If our domain exists, we ignore the provided options and defaults
       fetch_guest
+      
       @memory ||= options[:memory] || default_memory_size
       @vcpu   ||= options[:vcpu]   || default_vcpu_count
       @arch   ||= options[:arch]   || default_arch
@@ -105,6 +106,7 @@ module Virt
       @memory         = @domain.max_memory
       @current_memory = document("domain/currentMemory") if running?
       @type           = document("domain", "type")
+      @id             = document("domain", "id")
       @vcpu           = document("domain/vcpu")
       @arch           = document("domain/os/type", "arch")
       @machine        = document("domain/os/type", "machine")
